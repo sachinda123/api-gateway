@@ -1,17 +1,25 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
-    "module": "commonjs",
+    "target": "es5",
+    "module": "esnext",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "jsx": "react",
     "strict": true,
-    "resolveJsonModule": true,
     "esModuleInterop": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "outDir": "./dist"
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "isolatedModules": true,
+    "noEmit": true
   },
-  "target": "es6", // or a more recent ecmascript version
-  "experimentalDecorators": true,
-  "emitDecoratorMetadata": true,
-  "include": ["src"],
-  "exclude": ["node_modules"]
+  "include": [
+    "src"
+  ]
 }

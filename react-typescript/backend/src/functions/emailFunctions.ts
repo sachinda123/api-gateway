@@ -4,7 +4,23 @@ const randomize = require("randomatic");
 module.exports = {
   sendEmail: async (templateName: string, email: string) => {
     return new Promise((resolve, reject) => {
-      const code = randomize("*", 5);
+      const code = randomize("000000", 6);
+      let subject: string = "";
+      let html: string = "";
+
+      switch (templateName) {
+        case "sign_up":
+          subject = "Sign up password";
+          html = `<p>This is passwod for login</p><h3>${code}</h3> 
+          <div> Please kindly reset your password after login</div>`;
+          break;
+        case "reset_password":
+          subject = "reset your login password";
+          html = `<p>This is new passwod for login</p><h3>${code}</h3> 
+          <div> Please kindly reset your password after login</div> `;
+          break;
+        default:
+      }
 
       const transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
@@ -19,15 +35,14 @@ module.exports = {
       var mailOptions = {
         from: "sachinda123@gmail.com",
         to: `${email}`,
-        subject: "Sending Email using Node.js",
-        html: `<h1>${code}</h1>`,
+        subject: subject,
+        html: html,
       };
       transporter.sendMail(mailOptions, function (error: Error, info: Response) {
         if (error) {
-          console.log(error);
+          reject(error);
         } else {
-          resolve(info);
-          //   console.log("Email sent: " + info.response);
+          resolve({ info, code });
         }
       });
     });

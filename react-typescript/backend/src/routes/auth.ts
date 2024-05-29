@@ -6,6 +6,7 @@ const {
 } = require("../models");
 const jwt = require("jsonwebtoken");
 const { Op } = require("sequelize");
+const { sendEmail } = require("../functions/emailFunctions");
 import { Request, Response } from "express";
 interface TypedRequestBody<T> extends Request {
   body: T;
@@ -14,7 +15,6 @@ interface SignUpData {
   firstName: string;
   lastName: string;
   email: string;
-  password: string;
 }
 
 router.post("/login", async (req: TypedRequestBody<{ email: string; password: string }>, res: Response) => {
@@ -43,10 +43,9 @@ router.post("/login", async (req: TypedRequestBody<{ email: string; password: st
     return sendResponse(res, 500, { message: errormsg }, true);
   }
 });
-
 router.post("/signup", async (req: TypedRequestBody<SignUpData>, res: Response) => {
   try {
-    const { firstName, lastName, email, password } = req.body;
+    const { firstName, lastName, email } = req.body;
 
     if (!email || !isValidEmail(email)) {
       return sendResponse(res, 400, { message: "Email not valied" }, true);
@@ -55,10 +54,9 @@ router.post("/signup", async (req: TypedRequestBody<SignUpData>, res: Response) 
     if (userExist) {
       return sendResponse(res, 400, { message: "Email alrady taken" }, true);
     }
-    if (!password) {
-      return sendResponse(res, 400, { message: "password cannot be empty" }, true);
-    }
-    const user = await User.create({ firstName, lastName, email, password });
+    const emailRes = await sendEmail("sign_up", userExist.email);
+
+    const user = await User.create({ firstName, lastName, email, password: emailRes.code });
     return sendResponse(res, 200, { id: user.id, firstName, lastName, email }, true);
   } catch (error) {
     let errormsg: string = "Server error";
@@ -68,23 +66,19 @@ router.post("/signup", async (req: TypedRequestBody<SignUpData>, res: Response) 
     return sendResponse(res, 500, { message: errormsg }, true);
   }
 });
-
-router.post("/fogotpassword", async (req: TypedRequestBody<SignUpData>, res: Response) => {
+router.get("/fogotpassword/:userId", async (req: Request, res: Response) => {
   try {
-    console.log("call me fogot password");
-    // const { firstName, lastName, email, password } = req.body;
-    // if (!email || !isValidEmail(email)) {
-    //   return sendResponse(res, 400, { message: "Email not valied" }, true);
-    // }
-    // const userExist = await User.findOne({ where: { email: email } });
-    // if (userExist) {
-    //   return sendResponse(res, 400, { message: "Email alrady taken" }, true);
-    // }
-    // if (!password) {
-    //   return sendResponse(res, 400, { message: "password cannot be empty" }, true);
-    // }
-    // const user = await User.create({ firstName, lastName, email, password });
-    // return sendResponse(res, 200, { id: user.id, firstName, lastName, email }, true);
+    const id = req.params.userId;
+    const userExist = await User.findOne({ where: { id: id }, row: true });
+    if (!userExist) {
+      return sendResponse(res, 400, { message: "Invalied User" }, true);
+    }
+    const emailRes = await sendEmail("reset_password", userExist.email);
+    if (emailRes.code) {
+      await userExist.update({ password: emailRes.code });
+      return sendResponse(res, 200, { message: "Password changed" }, true);
+    }
+    return sendResponse(res, 400, { message: "Email send error" }, true);
   } catch (error) {
     let errormsg: string = "Server error";
     if (error instanceof Error) {
