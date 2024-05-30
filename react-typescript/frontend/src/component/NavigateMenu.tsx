@@ -1,10 +1,6 @@
 import React from "react";
 
-interface NavigateMenuProps {
-  name: string;
-}
-
-const NavigateMenu: React.FC<NavigateMenuProps> = ({ name }) => {
+const NavigateMenu: React.FC = () => {
   return (
     <nav className="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
       <button id="sidebarToggleTop" className="btn btn-link d-md-none rounded-circle mr-3">

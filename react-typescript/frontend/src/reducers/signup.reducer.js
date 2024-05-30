@@ -3,7 +3,7 @@ import { SIGN_UP_REQUEST, SIGN_UP_SUCCESS, SIGN_UP_FAILURE, SIGN_UP_ERROR_RESET 
 const initialState = {
   loading: false,
   error: null,
-  data: null,
+  registed: false,
 };
 
 const signUpReducer = (state = initialState, action) => {
@@ -12,13 +12,13 @@ const signUpReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: true,
-        data: null,
+        registed: null,
         error: null,
       };
     case SIGN_UP_SUCCESS:
       return {
         ...state,
-        data: action.payload,
+        registed: true,
         loading: false,
         error: null,
       };
@@ -27,7 +27,7 @@ const signUpReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         error: action.payload,
-        data: null,
+        registed: false,
       };
     case SIGN_UP_ERROR_RESET:
       return {

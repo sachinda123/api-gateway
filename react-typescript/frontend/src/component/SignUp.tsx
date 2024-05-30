@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { Navigate } from "react-router-dom";
 import { signup, errorreset } from "../actions/signup.actions";
 import { RootState } from "../types/index";
 
 const SignUp: React.FC = () => {
   const dispatch = useDispatch();
-  const { loading, error } = useSelector((state: RootState) => state.signup);
+  const { loading, error, registed } = useSelector((state: RootState) => state.signup);
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -17,6 +18,10 @@ const SignUp: React.FC = () => {
       dispatch(errorreset());
     }
   };
+
+  if (registed) {
+    return <Navigate to="/login" />;
+  }
 
   return (
     <div className="container">

@@ -9,7 +9,11 @@ export const signup = (firstName, lastName, email) => async (dispatch) => {
     const response = await axios.post(API_URL + "auth/signup", { firstName, lastName, email });
     dispatch({ type: SIGN_UP_SUCCESS, payload: response.data });
   } catch (error) {
-    dispatch({ type: SIGN_UP_FAILURE, payload: error.response.data });
+    if (error.response) {
+      dispatch({ type: SIGN_UP_FAILURE, payload: error.response.data });
+    } else {
+      dispatch({ type: SIGN_UP_FAILURE, payload: { message: "some error happen" } });
+    }
   }
 };
 

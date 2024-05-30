@@ -1,17 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-// import { login } from "../actions/auth.actions";
+import { login, errorreset } from "../actions/auth.actions";
+import { RootState } from "../types/index";
+import { Navigate } from "react-router-dom";
 
 const Login: React.FC = () => {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { loading, loggedIn, error } = useSelector((state: RootState) => state.auth);
+
+  if (loggedIn) {
+    return <Navigate to="/" />;
+  }
 
   const log = () => {
-    console.log("call me log ");
+    dispatch(login(email, password));
   };
-
-  // const { loading, movies, error } = useSelector((state) => state.auth);
+  const errorReset = () => {
+    if (error) {
+      dispatch(errorreset());
+    }
+  };
 
   return (
     <div className="container">
@@ -26,40 +36,54 @@ const Login: React.FC = () => {
                     <div className="text-center">
                       <h1 className="h4 text-gray-900 mb-4">Welcome Back!</h1>
                     </div>
-                    <form className="user">
-                      <div className="form-group">
-                        <input
-                          type="email"
-                          className="form-control form-control-user"
-                          aria-describedby="emailHelp"
-                          placeholder="Enter Email Address..."
-                          onChange={(e) => {
-                            setEmail(e.target.value);
-                          }}
-                        />
-                      </div>
-                      <div className="form-group">
-                        <input
-                          type="password"
-                          className="form-control form-control-user"
-                          placeholder="Password"
-                          onChange={(e) => {
-                            setPassword(e.target.value);
-                          }}
-                        />
-                      </div>
+                    <div className="form-group">
+                      <input
+                        type="email"
+                        className="form-control form-control-user"
+                        aria-describedby="emailHelp"
+                        placeholder="Enter Email Address..."
+                        onChange={(e) => {
+                          errorReset();
+                          setEmail(e.target.value);
+                        }}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <input
+                        type="password"
+                        className="form-control form-control-user"
+                        placeholder="Password"
+                        onChange={(e) => {
+                          errorReset();
+                          setPassword(e.target.value);
+                        }}
+                      />
+                    </div>
 
-                      <button className="btn btn-primary btn-user btn-block" onCanPlay={log}>
-                        Login
-                      </button>
-                      <hr />
-                      <button className="btn btn-google btn-user btn-block">
-                        <i className="fab fa-google fa-fw"></i> Login with Google
-                      </button>
-                      <button className="btn btn-facebook btn-user btn-block">
-                        <i className="fab fa-facebook-f fa-fw"></i> Login with Facebook
-                      </button>
-                    </form>
+                    <button className="btn btn-primary btn-user btn-block" onClick={log} disabled={loading}>
+                      {loading ? (
+                        <div className="spinner-border " role="status">
+                          <span className="sr-only">Loading...</span>
+                        </div>
+                      ) : (
+                        "Login"
+                      )}
+                    </button>
+
+                    {error && error.message ? (
+                      <div className="form-group">
+                        <span className=" badge badge-danger">{error.message}</span>
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                    <hr />
+                    <button className="btn btn-google btn-user btn-block">
+                      <i className="fab fa-google fa-fw"></i> Login with Google
+                    </button>
+                    <button className="btn btn-facebook btn-user btn-block">
+                      <i className="fab fa-facebook-f fa-fw"></i> Login with Facebook
+                    </button>
                     <hr />
                     <div className="text-center">
                       <a className="small" href="/forgotpassword">

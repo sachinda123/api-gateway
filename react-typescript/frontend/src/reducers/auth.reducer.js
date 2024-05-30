@@ -1,4 +1,4 @@
-import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE } from "../types";
+import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, LOGIN_ERROR_RESET } from "../types";
 
 const initialState = {
   loggedIn: false,
@@ -30,6 +30,11 @@ const authReducer = (state = initialState, action) => {
         loading: false,
         error: action.payload,
         user: null,
+      };
+    case LOGIN_ERROR_RESET:
+      return {
+        ...state,
+        error: null,
       };
     default:
       return state;

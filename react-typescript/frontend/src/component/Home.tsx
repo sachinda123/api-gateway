@@ -6,7 +6,7 @@ const Home: React.FC = () => {
   return (
     <div>
       {/* <LeftMenu /> */}
-      <NavigateMenu name="sss" />
+      <NavigateMenu />
     </div>
   );
 };
