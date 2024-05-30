@@ -1,7 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { signup, errorreset } from "../actions/signup.actions";
+import { RootState } from "../types/index";
+
 const SignUp: React.FC = () => {
+  const dispatch = useDispatch();
+  const { loading, error } = useSelector((state: RootState) => state.signup);
   const [email, setEmail] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const register = () => {
+    dispatch(signup(firstName, lastName, email));
+  };
+  const errorReset = () => {
+    if (error) {
+      dispatch(errorreset());
+    }
+  };
 
   return (
     <div className="container">
@@ -14,31 +29,61 @@ const SignUp: React.FC = () => {
                 <div className="text-center">
                   <h1 className="h4 text-gray-900 mb-4">Create an Account!</h1>
                 </div>
-                <form className="user">
-                  <div className="form-group row">
-                    <div className="col-sm-6 mb-3 mb-sm-0">
-                      <input type="text" className="form-control form-control-user" id="exampleFirstName" placeholder="First Name" />
-                    </div>
-                    <div className="col-sm-6">
-                      <input type="text" className="form-control form-control-user" id="exampleLastName" placeholder="Last Name" />
-                    </div>
+                <div className="form-group row">
+                  <div className="col-sm-6 mb-3 mb-sm-0">
+                    <input
+                      type="text"
+                      className="form-control form-control-user"
+                      placeholder="First Name"
+                      onChange={(e) => {
+                        errorReset();
+                        setFirstName(e.target.value);
+                      }}
+                    />
                   </div>
-                  <div className="form-group">
-                    <input type="email" className="form-control form-control-user" id="exampleInputEmail" placeholder="Email Address" />
+                  <div className="col-sm-6">
+                    <input
+                      type="text"
+                      className="form-control form-control-user"
+                      placeholder="Last Name"
+                      onChange={(e) => {
+                        errorReset();
+                        setLastName(e.target.value);
+                      }}
+                    />
                   </div>
-                  <button className="btn btn-primary btn-user btn-block">Register Account</button>
+                </div>
+                <div className="form-group">
+                  <input
+                    type="email"
+                    className="form-control form-control-user"
+                    placeholder="Email Address"
+                    onChange={(e) => {
+                      errorReset();
+                      setEmail(e.target.value);
+                    }}
+                  />
+                </div>
+                <button className="btn btn-primary btn-user btn-block" onClick={register} disabled={loading}>
+                  {loading ? (
+                    <div className="spinner-border " role="status">
+                      <span className="sr-only">Loading...</span>
+                    </div>
+                  ) : (
+                    "Register Account"
+                  )}
+                </button>
 
-                  <div className="form-group">
-                    <span className="badge bg-warning">Registed email recive tempory password</span>
-                  </div>
-                  <hr />
-                  <button className="btn btn-google btn-user btn-block">
-                    <i className="fab fa-google fa-fw"></i> Register with Google
-                  </button>
-                  <button className="btn btn-facebook btn-user btn-block">
-                    <i className="fab fa-facebook-f fa-fw"></i> Register with Facebook
-                  </button>
-                </form>
+                <div className="form-group">
+                  <span className={error && error.message ? " badge badge-danger" : "badge bg-warning"}>{error && error.message ? error.message : "  Registed email recive tempory password"}</span>
+                </div>
+                <hr />
+                <button className="btn btn-google btn-user btn-block">
+                  <i className="fab fa-google fa-fw"></i> Register with Google
+                </button>
+                <button className="btn btn-facebook btn-user btn-block">
+                  <i className="fab fa-facebook-f fa-fw"></i> Register with Facebook
+                </button>
                 <hr />
                 <div className="text-center">
                   <a className="small" href="/forgotpassword">

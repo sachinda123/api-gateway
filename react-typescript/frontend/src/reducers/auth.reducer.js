@@ -1,4 +1,4 @@
-import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE } from "../actionTypes";
+import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE } from "../types";
 
 const initialState = {
   loggedIn: false,

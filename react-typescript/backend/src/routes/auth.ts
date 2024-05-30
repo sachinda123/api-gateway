@@ -46,7 +46,6 @@ router.post("/login", async (req: TypedRequestBody<{ email: string; password: st
 router.post("/signup", async (req: TypedRequestBody<SignUpData>, res: Response) => {
   try {
     const { firstName, lastName, email } = req.body;
-
     if (!email || !isValidEmail(email)) {
       return sendResponse(res, 400, { message: "Email not valied" }, true);
     }
@@ -54,7 +53,7 @@ router.post("/signup", async (req: TypedRequestBody<SignUpData>, res: Response) 
     if (userExist) {
       return sendResponse(res, 400, { message: "Email alrady taken" }, true);
     }
-    const emailRes = await sendEmail("sign_up", userExist.email);
+    const emailRes = await sendEmail("sign_up", email);
 
     const user = await User.create({ firstName, lastName, email, password: emailRes.code });
     return sendResponse(res, 200, { id: user.id, firstName, lastName, email }, true);

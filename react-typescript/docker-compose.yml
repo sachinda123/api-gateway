@@ -50,22 +50,22 @@ services:
       - "44067:80"
     networks:
       network_default:
-  # frontend:
-  #   container_name: frontend
-  #   build:
-  #     context: ./frontend
-  #     dockerfile: ./Dockerfile
-  #   ports:
-  #     - 3000:3000
-  #   volumes:
-  #     - ./frontend:/home/app
-  #   working_dir: /home/app
-  #   environment:
-  #     - DEBUG=Auth
-  #     - NODE_ENV=${NODE_ENV}
-  #   command: sh -c "npm install && npm start "
-  #   networks:
-  #     network_default:
+  frontend:
+    container_name: frontend
+    build:
+      context: ./frontend
+      dockerfile: ./Dockerfile
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend:/home/app
+    working_dir: /home/app
+    environment:
+      - DEBUG=Auth
+      - NODE_ENV=${NODE_ENV}
+    command: sh -c "npm install && npm start "
+    networks:
+      network_default:
 
 volumes:
   movie_data:

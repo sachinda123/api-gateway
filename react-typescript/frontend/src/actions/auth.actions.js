@@ -26,7 +26,7 @@ import axios from "axios";
 // };
 
 // actions.js
-import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE } from "../actionTypes";
+import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE } from "../types";
 
 export const login = (username, password) => {
   return (dispatch) => {

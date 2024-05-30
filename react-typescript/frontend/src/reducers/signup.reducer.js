@@ -1,43 +1,42 @@
-import { ADD_LIST_REQUEST, ADD_LIST_ADD_SUCCESS, ADD_LIST_FAILURE, LIST_ERROR_RESET } from "../actions/listAddActions";
+import { SIGN_UP_REQUEST, SIGN_UP_SUCCESS, SIGN_UP_FAILURE, SIGN_UP_ERROR_RESET } from "../types";
 
 const initialState = {
   loading: false,
-  added: false,
   error: null,
+  data: null,
 };
 
-const addListReducer = (state = initialState, action) => {
+const signUpReducer = (state = initialState, action) => {
   switch (action.type) {
-    case ADD_LIST_REQUEST:
+    case SIGN_UP_REQUEST:
       return {
         ...state,
         loading: true,
+        data: null,
         error: null,
-        added: false,
       };
-    case ADD_LIST_ADD_SUCCESS:
+    case SIGN_UP_SUCCESS:
       return {
         ...state,
-        added: true,
+        data: action.payload,
         loading: false,
         error: null,
       };
-    case ADD_LIST_FAILURE:
+    case SIGN_UP_FAILURE:
       return {
         ...state,
         loading: false,
         error: action.payload,
+        data: null,
       };
-    case LIST_ERROR_RESET:
+    case SIGN_UP_ERROR_RESET:
       return {
         ...state,
-        loading: false,
         error: null,
-        added: false,
       };
     default:
       return state;
   }
 };
 
-export default addListReducer;
+export default signUpReducer;
