@@ -14,7 +14,7 @@ Change Origin: Supports changing the request origin for services.
 To install the package, use npm:
 
 ```bash
-npm install your-package-name
+npm install express-service-gateway
 ```
 
 ## Usage
@@ -28,7 +28,7 @@ Create an index.js file in your project directory to define your gateway configu
 In your index.js, import the gatewayMiddleware from the package:
 
 ```bash
-const { gatewayMiddleware } = require("your-package-name");
+const { gatewayMiddleware } = require("express-service-gateway");
 ```
 
 ### 3. Setup Configuration JSON

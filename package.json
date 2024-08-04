@@ -1,6 +1,6 @@
 {
-  "name": "microservice-gateway",
-  "version": "1.0.0",
+  "name": "express-service-gateway",
+  "version": "1.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -10,13 +10,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com:sachinda123/microservice-gateway.git"
+    "url": "git+ssh://git@github.com:sachinda123/express-service-gateway.git"
   },
   "keywords": [],
   "bugs": {
-    "url": "https://github.com/sachinda123/microservice-gateway/issues"
+    "url": "https://github.com/sachinda123/express-service-gateway/issues"
   },
-  "homepage": "https://github.com/sachinda123/microservice-gateway#readme",
+  "homepage": "https://github.com/sachinda123/express-service-gateway#readme",
   "author": "sachinda",
   "license": "ISC",
   "dependencies": {
