@@ -8,7 +8,15 @@
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:sachinda123/api-gateway.git"
+  },
   "keywords": [],
+  "bugs": {
+    "url": "https://github.com/sachinda123/api-gateway/issues"
+  },
+  "homepage": "https://github.com/sachinda123/api-gateway#readme",
   "author": "sachinda",
   "license": "ISC",
   "dependencies": {
